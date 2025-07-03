@@ -1,0 +1,18 @@
+services:
+  # Nome que o Docker Compose usa para gerenciar o serviço e hostname dentro dessa rede.
+  app:
+    # Constrói a imagem a partir do Dockerfile no diretório atual
+    build: .
+    container_name: devops-api
+    # Mapeia a porta 8000 do contêiner para a porta 8000 da sua máquina
+    ports:
+      - "8000:8000"
+    # Monta o diretório atual no diretório /app do contêiner
+    # Isso permite o live-reloading: alterações no seu código local
+    # são refletidas instantaneamente no contêiner.
+    # Também garante que o banco de dados 'escola.db' seja salvo na sua máquina.
+    volumes:
+      - .:/app
+    # Sobrescreve o CMD do Dockerfile para garantir que o --reload seja usado
+    # no ambiente de desenvolvimento do Compose.
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
